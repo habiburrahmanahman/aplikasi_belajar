@@ -8,22 +8,21 @@ on:
 
 jobs:
   build-android:
-    name: Build APK dengan Buildozer
     runs-on: ubuntu-latest
+    name: Build APK dengan Buildozer
+
+    container:
+      image: kivy/buildozer:latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build dengan Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
+        run: buildozer android debug
 
-      - name: Upload APK
+      - name: Unggah APK sebagai artifact
         uses: actions/upload-artifact@v4
         with:
           name: aplikasi-guru-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
