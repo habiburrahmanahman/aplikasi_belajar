@@ -23,13 +23,26 @@ jobs:
           rm -rf /github/home/.buildozer/android
           rm -rf .buildozer/android
 
+      - name: Cek resource runner
+        run: |
+          echo "===== MEMORY ====="
+          free -h
+
+          echo ""
+          echo "===== DISK ====="
+          df -h
+
+          echo ""
+          echo "===== CPU ====="
+          nproc
+
       - name: Build dengan Buildozer
         run: |
           set +e
 
-          buildozer -v android debug 2>&1 | tee build.log
+          buildozer -v android debug > build.log 2>&1
 
-          STATUS=${PIPESTATUS[0]}
+          STATUS=$?
 
           echo ""
           echo "========================================"
@@ -37,7 +50,11 @@ jobs:
           echo "========================================"
 
           echo ""
-          echo "===== 100 BARIS TERAKHIR LOG ====="
+          echo "===== PESAN ERROR PENTING ====="
+          grep -iE "error|failed|fatal|traceback|exception|backend subprocess|command failed" build.log | tail -n 100 || true
+
+          echo ""
+          echo "===== 100 BARIS TERAKHIR ====="
           tail -n 100 build.log
 
           exit $STATUS
