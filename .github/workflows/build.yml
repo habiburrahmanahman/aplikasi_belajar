@@ -18,10 +18,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Bersihkan Android SDK Buildozer
+        run: |
+          rm -rf /github/home/.buildozer/android
+          rm -rf .buildozer/android
+
       - name: Build dengan Buildozer
         run: buildozer android debug
 
-      - name: Unggah APK sebagai artifact
+      - name: Unggah APK
         uses: actions/upload-artifact@v4
         with:
           name: aplikasi-guru-apk
