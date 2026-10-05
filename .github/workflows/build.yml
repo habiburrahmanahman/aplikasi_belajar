@@ -9,10 +9,18 @@ jobs:
   build-android:
     runs-on: ubuntu-latest
     name: Build APK dengan Buildozer
+
     container:
       image: kivy/buildozer:latest
+      options: --user user
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cek user
+        run: |
+          whoami
+          id
 
       - name: Build dengan Buildozer
         run: buildozer android debug
