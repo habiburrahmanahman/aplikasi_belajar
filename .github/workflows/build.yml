@@ -10,23 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Build APK dengan Buildozer
 
-    container:
-      image: kivy/buildozer:latest
-      options: --user user
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Cek user
-        run: |
-          whoami
-          id
+      - name: Build APK
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: android debug
+          repository_root: .
 
-      - name: Build dengan Buildozer
-        run: buildozer android debug
-
-      - name: Unggah APK sebagai artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: aplikasi-guru-apk
-          path: bin/*.apk
+          path: ${{ steps.buildozer.outputs.filename }}
