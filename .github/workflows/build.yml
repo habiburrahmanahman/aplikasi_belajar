@@ -24,10 +24,29 @@ jobs:
           rm -rf .buildozer/android
 
       - name: Build dengan Buildozer
-        run: buildozer android debug
+        run: |
+          set +e
 
-      - name: Unggah APK
+          buildozer -v android debug 2>&1 | tee build.log
+
+          STATUS=${PIPESTATUS[0]}
+
+          echo ""
+          echo "========================================"
+          echo "BUILD EXIT CODE: $STATUS"
+          echo "========================================"
+
+          echo ""
+          echo "===== 100 BARIS TERAKHIR LOG ====="
+          tail -n 100 build.log
+
+          exit $STATUS
+
+      - name: Unggah APK dan log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: aplikasi-guru-apk
-          path: bin/*.apk
+          name: aplikasi-guru-build
+          path: |
+            bin/*.apk
+            build.log
