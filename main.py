@@ -358,6 +358,7 @@ class BiodataScreen(MDScreen):
         app.profil["sekolah"] = sekolah
         app.profil["uid"] = uid
         app.simpan_profil_lokal()
+        app.tandai_daftar_kotor()
 
         self.status_label.text = (
             "Identitas berhasil dibuat. "
