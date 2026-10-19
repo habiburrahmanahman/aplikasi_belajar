@@ -274,53 +274,20 @@ def salam():
 class BiodataScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(md_bg_color=WARNA_LATAR, **kwargs)
-        root = MDBoxLayout(orientation="vertical")
 
-        # Bagian atas: hero hijau + kartu form yang menimpa sedikit
-        atas = MDBoxLayout(orientation="vertical", spacing=-dp(40))
-        adaptif(atas)
+        # UJI DIAGNOSTIK: layar sederhana tanpa kartu dan ikon KivyMD
+        root = FloatLayout()
 
-        hero = MDCard(orientation="vertical", size_hint_y=None, height=dp(270), elevation=0,
-                      md_bg_color=WARNA_UTAMA, radius=[0, 0, dp(32), dp(32)],
-                      padding=(dp(28), dp(52), dp(28), dp(24)), spacing=dp(10))
-        hero.add_widget(ikon_tile("book-open-page-variant", 48, WARNA_AKSEN,
-                                  WARNA_TEKS_AKSEN, 14))
-        hero.add_widget(teks("Selamat datang, Bapak/Ibu Guru", "H5", PUTIH, tebal=True))
-        hero.add_widget(teks("Data ini cukup diisi satu kali. Tanpa kata sandi.", "Body2",
-                             WARNA_TEKS_TERANG))
-        atas.add_widget(hero)
+        label = Label(
+            text="Uji Aplikasi Guru",
+            font_size="20sp",
+            color=WARNA_UTAMA,
+            size_hint=(1, None),
+            height=dp(60),
+            pos_hint={"center_x": 0.5, "center_y": 0.5}
+        )
 
-        pembungkus = MDBoxLayout(padding=(dp(20), 0), size_hint_y=None)
-        adaptif(pembungkus)
-        form = kartu(padding=dp(20), radius=[dp(24)] * 4)
-        adaptif(form)
-
-        self.input_nama = kolom("Nama guru")
-        self.input_sekolah = kolom("Nama sekolah")
-        form.add_widget(self.input_nama)
-        form.add_widget(self.input_sekolah)
-
-        info = MDBoxLayout(size_hint_y=None, spacing=dp(8))
-        adaptif(info)
-        info.add_widget(ikon("lock-outline", WARNA_TEKS2, 16))
-        info.add_widget(teks("Identitas anonim dibuat otomatis di perangkat ini.",
-                             "Caption", WARNA_TEKS2))
-        form.add_widget(info)
-
-        self.status_label = teks("", "Body2", WARNA_ERROR)
-        form.add_widget(self.status_label)
-
-        pembungkus.add_widget(form)
-        atas.add_widget(pembungkus)
-        root.add_widget(atas)
-        root.add_widget(Widget())
-
-        cta = MDBoxLayout(padding=(dp(20), dp(12), dp(20), dp(24)), size_hint_y=None,
-                          height=dp(92))
-        self.btn_simpan = tombol_aksen("Simpan & Mulai", "arrow-right", self.simpan_profil)
-        cta.add_widget(self.btn_simpan)
-        root.add_widget(cta)
-
+        root.add_widget(label)
         self.add_widget(root)
 
     def simpan_profil(self, *args):
