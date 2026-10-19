@@ -360,11 +360,10 @@ class BiodataScreen(MDScreen):
         app.simpan_profil_lokal()
         app.tandai_daftar_kotor()
 
-        self.status_label.text = (
-            "Identitas berhasil dibuat. "
-            "Pengujian berhenti sebelum membuka Beranda."
-        )
-        self.btn_simpan.disabled = False
+        self.status_label.text = "Membuka Beranda..."
+        self.btn_simpan.disabled = True
+
+        app.goto("beranda")
 
 # ---------------------------------------------------------------- BERANDA
 class BerandaKonten(MDBoxLayout):
