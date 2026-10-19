@@ -21,17 +21,20 @@ jobs:
       - name: Bersihkan Android SDK Buildozer
         run: |
           rm -rf /github/home/.buildozer/android
-          rm -rf .buildozer/android
+          rm -rf .buildozer
+
+      - name: Pin Cython (kompatibel dengan Kivy 2.3.0)
+        run: |
+          pip install "cython==0.29.37"
+          cython --version
 
       - name: Cek resource runner
         run: |
           echo "===== MEMORY ====="
           free -h
-
           echo ""
           echo "===== DISK ====="
           df -h
-
           echo ""
           echo "===== CPU ====="
           nproc
@@ -50,8 +53,8 @@ jobs:
           echo "========================================"
 
           echo ""
-          echo "===== PESAN ERROR PENTING ====="
-          grep -iE "error|failed|fatal|traceback|exception|backend subprocess|command failed" build.log | tail -n 100 || true
+          echo "===== ERROR PERTAMA (penyebab asli biasanya di sini) ====="
+          grep -inE "error:|traceback|command failed" build.log | head -n 20 || true
 
           echo ""
           echo "===== 100 BARIS TERAKHIR ====="
