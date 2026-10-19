@@ -283,8 +283,7 @@ class BiodataScreen(MDScreen):
         hero = MDCard(orientation="vertical", size_hint_y=None, height=dp(270), elevation=0,
                       md_bg_color=WARNA_UTAMA, radius=[0, 0, dp(32), dp(32)],
                       padding=(dp(28), dp(52), dp(28), dp(24)), spacing=dp(10))
-        hero.add_widget(ikon_tile("book-open-page-variant", 48, WARNA_AKSEN,
-                                  WARNA_TEKS_AKSEN, 14))
+        hero.add_widget(Widget(size_hint_y=None, height=dp(48)))
         hero.add_widget(teks("Selamat datang, Bapak/Ibu Guru", "H5", PUTIH, tebal=True))
         hero.add_widget(teks("Data ini cukup diisi satu kali. Tanpa kata sandi.", "Body2",
                              WARNA_TEKS_TERANG))
