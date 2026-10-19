@@ -349,18 +349,20 @@ class BiodataScreen(MDScreen):
         self.status_label.text = "Gagal terhubung ke server: " + pesan
         self.btn_simpan.disabled = False
 
-    @mainthread
-    def _identitas_berhasil(self, nama, sekolah, uid):
-        app = MDApp.get_running_app()
-        app.profil["nama"] = nama
-        app.profil["sekolah"] = sekolah
-        app.profil["uid"] = uid
-        app.simpan_profil_lokal()
-        app.tandai_daftar_kotor()
+   @mainthread
+def _identitas_berhasil(self, nama, sekolah, uid):
+    app = MDApp.get_running_app()
 
-        kabari("Selamat datang, " + nama + "!")
-        app.goto("beranda")
+    app.profil["nama"] = nama
+    app.profil["sekolah"] = sekolah
+    app.profil["uid"] = uid
+    app.simpan_profil_lokal()
 
+    self.status_label.text = (
+        "Identitas berhasil dibuat. "
+        "Pengujian berhenti sebelum membuka Beranda."
+    )
+    self.btn_simpan.disabled = False
 
 # ---------------------------------------------------------------- BERANDA
 class BerandaKonten(MDBoxLayout):
