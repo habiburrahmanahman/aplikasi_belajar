@@ -543,34 +543,27 @@ class ProfilKonten(MDBoxLayout):
         kabari("Profil tersimpan")
 
 
+
 class MainScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(md_bg_color=WARNA_LATAR, **kwargs)
-        nav = MDBottomNavigation()
-        pasang(nav, panel_color=WARNA_KARTU, text_color_active=WARNA_UTAMA,
-               text_color_normal=WARNA_TEKS2, selected_color_background=WARNA_HIJAU_MUDA)
 
-        tab_beranda = MDBottomNavigationItem(name="tab_beranda", text="Beranda",
-                                             icon="home-variant")
-        self.beranda = BerandaKonten()
-        tab_beranda.add_widget(self.beranda)
-        nav.add_widget(tab_beranda)
+        root = FloatLayout()
 
-        tab_profil = MDBottomNavigationItem(name="tab_profil", text="Profil",
-                                            icon="account-circle")
-        self.profil = ProfilKonten()
-        tab_profil.add_widget(self.profil)
-        nav.add_widget(tab_profil)
+        label = Label(
+            text="Beranda Uji Berhasil",
+            font_size="22sp",
+            color=WARNA_UTAMA,
+            size_hint=(1, None),
+            height=dp(60),
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+        )
 
-        self.add_widget(nav)
+        root.add_widget(label)
+        self.add_widget(root)
 
     def on_pre_enter(self, *args):
-        app = MDApp.get_running_app()
-        if app.daftar_perlu_muat:
-            self.beranda.muat_daftar_materi()
-        else:
-            self.beranda.perbarui_salam()
-        self.profil.muat_profil()
+        pass
 
 
 # ---------------------------------------------------------------- REKAP HASIL
