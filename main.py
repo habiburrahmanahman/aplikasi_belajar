@@ -543,45 +543,42 @@ class ProfilKonten(MDBoxLayout):
         kabari("Profil tersimpan")
 
 
-
-
 class MainScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(md_bg_color=WARNA_LATAR, **kwargs)
 
         nav = MDBottomNavigation()
 
-        # Tab Beranda sederhana
+        # Tab Beranda menggunakan konten asli
         tab_beranda = MDBottomNavigationItem(
             name="tab_beranda",
             text="Beranda",
+            icon="home-variant",
         )
-        label_beranda = Label(
-            text="Uji Tab Beranda",
-            font_size="22sp",
-            color=WARNA_UTAMA,
-        )
-        tab_beranda.add_widget(label_beranda)
+        self.beranda = BerandaKonten()
+        tab_beranda.add_widget(self.beranda)
         nav.add_widget(tab_beranda)
 
-        # Tab Profil sederhana
+        # Tab Profil tetap sederhana untuk pengujian
         tab_profil = MDBottomNavigationItem(
             name="tab_profil",
             text="Profil",
+            icon="account-circle",
         )
-        label_profil = Label(
-            text="Uji Tab Profil",
-            font_size="22sp",
-            color=WARNA_UTAMA,
+        tab_profil.add_widget(
+            Label(
+                text="Uji Tab Profil",
+                font_size="22sp",
+                color=WARNA_UTAMA,
+            )
         )
-        tab_profil.add_widget(label_profil)
         nav.add_widget(tab_profil)
 
         self.add_widget(nav)
 
     def on_pre_enter(self, *args):
+        # Sengaja tidak memuat data Firebase dahulu
         pass
-
 
 
 # ---------------------------------------------------------------- REKAP HASIL
