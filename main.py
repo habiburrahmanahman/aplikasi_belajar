@@ -1428,7 +1428,7 @@ class AplikasiGuruApp(MDApp):
         self.layar(awal)
         self.sm.current = awal
         if awal == "beranda":
-            self._jadwalkan_editor()
+             pass  # Pengujian: jangan bangun Editor otomatis
 
         return self.sm
 
