@@ -544,26 +544,44 @@ class ProfilKonten(MDBoxLayout):
 
 
 
+
 class MainScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(md_bg_color=WARNA_LATAR, **kwargs)
 
-        root = FloatLayout()
+        nav = MDBottomNavigation()
 
-        label = Label(
-            text="Beranda Uji Berhasil",
+        # Tab Beranda sederhana
+        tab_beranda = MDBottomNavigationItem(
+            name="tab_beranda",
+            text="Beranda",
+        )
+        label_beranda = Label(
+            text="Uji Tab Beranda",
             font_size="22sp",
             color=WARNA_UTAMA,
-            size_hint=(1, None),
-            height=dp(60),
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
         )
+        tab_beranda.add_widget(label_beranda)
+        nav.add_widget(tab_beranda)
 
-        root.add_widget(label)
-        self.add_widget(root)
+        # Tab Profil sederhana
+        tab_profil = MDBottomNavigationItem(
+            name="tab_profil",
+            text="Profil",
+        )
+        label_profil = Label(
+            text="Uji Tab Profil",
+            font_size="22sp",
+            color=WARNA_UTAMA,
+        )
+        tab_profil.add_widget(label_profil)
+        nav.add_widget(tab_profil)
+
+        self.add_widget(nav)
 
     def on_pre_enter(self, *args):
         pass
+
 
 
 # ---------------------------------------------------------------- REKAP HASIL
