@@ -432,8 +432,28 @@ class BerandaKonten(MDBoxLayout):
 
         scroll.add_widget(self.list_box)
         body.add_widget(scroll)
+       
         area.add_widget(body)
+        
+        fab = tombol(
+            "Materi baru",
+            "plus",
+            lambda *a: None,
+            bg=WARNA_AKSEN,
+            fg=WARNA_TEKS_AKSEN,
+            tinggi=56,
+            radius=18,
+            ukuran_font=15,
+            ukuran_ikon=22,
+            elevation=3,
+            size_hint_x=None,
+            width=dp(172),
+            pos_hint={"right": 0.95, "y": 0.03},
+        )
+        area.add_widget(fab)
+        
         self.add_widget(area)
+
 
     def perbarui_salam(self):
         pass
