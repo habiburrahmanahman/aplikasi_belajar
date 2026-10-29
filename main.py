@@ -374,10 +374,17 @@ class BerandaKonten(MDBoxLayout):
             **kwargs
         )
 
+        self.bar = header(
+            "Selamat datang",
+            "Materi apa yang akan diajarkan hari ini?",
+            tinggi=128,
+        )
+        self.add_widget(self.bar)
+
         self.add_widget(
             Label(
-                text="Beranda berhasil dibuka",
-                font_size="22sp",
+                text="Konten Beranda sedang diuji",
+                font_size="18sp",
                 color=WARNA_UTAMA,
             )
         )
