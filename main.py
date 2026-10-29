@@ -435,22 +435,16 @@ class BerandaKonten(MDBoxLayout):
        
         area.add_widget(body)
         
-        fab = tombol(
-            "Materi baru",
-            "plus",
-            lambda *a: None,
-            bg=WARNA_AKSEN,
-            fg=WARNA_TEKS_AKSEN,
-            tinggi=56,
-            radius=18,
-            ukuran_font=15,
-            ukuran_ikon=22,
-            elevation=3,
-            size_hint_x=None,
-            width=dp(172),
+        uji_tombol = Label(
+            text="Materi baru",
+            font_size="16sp",
+            bold=True,
+            color=WARNA_TEKS_AKSEN,
+            size_hint=(None, None),
+            size=(dp(172), dp(56)),
             pos_hint={"right": 0.95, "y": 0.03},
         )
-        area.add_widget(fab)
+        area.add_widget(uji_tombol)
         
         self.add_widget(area)
 
