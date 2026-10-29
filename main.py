@@ -400,7 +400,7 @@ class BerandaKonten(MDBoxLayout):
         )
 
         self.status_label = Label(
-            text="Uji tampilan isi Beranda",
+            text="Daftar materi untuk pengujian",
             font_size="14sp",
             color=WARNA_TEKS2,
             size_hint_y=None,
@@ -408,6 +408,30 @@ class BerandaKonten(MDBoxLayout):
         )
         body.add_widget(self.status_label)
 
+        scroll = ScrollView()
+
+        self.list_box = MDBoxLayout(
+            orientation="vertical",
+            size_hint_y=None,
+            spacing=dp(12),
+            padding=(0, 0, 0, dp(20)),
+        )
+        self.list_box.bind(
+            minimum_height=self.list_box.setter("height")
+        )
+
+        self.list_box.add_widget(
+            Label(
+                text="Contoh materi pertama",
+                font_size="16sp",
+                color=WARNA_UTAMA,
+                size_hint_y=None,
+                height=dp(50),
+            )
+        )
+
+        scroll.add_widget(self.list_box)
+        body.add_widget(scroll)
         area.add_widget(body)
         self.add_widget(area)
 
