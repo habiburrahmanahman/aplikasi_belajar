@@ -434,15 +434,16 @@ class BerandaKonten(MDBoxLayout):
         body.add_widget(scroll)
        
         area.add_widget(body)
-        
-        uji_tombol = Label(
+
+        uji_tombol = MDRaisedButton(
             text="Materi baru",
+            md_bg_color=WARNA_AKSEN,
+            text_color=WARNA_TEKS_AKSEN,
             font_size="16sp",
-            bold=True,
-            color=WARNA_TEKS_AKSEN,
             size_hint=(None, None),
             size=(dp(172), dp(56)),
             pos_hint={"right": 0.95, "y": 0.03},
+            on_release=lambda *a: MDApp.get_running_app().buka_editor_baru()
         )
         area.add_widget(uji_tombol)
         
