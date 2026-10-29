@@ -381,20 +381,41 @@ class BerandaKonten(MDBoxLayout):
         )
         self.add_widget(self.bar)
 
-        self.add_widget(
+        area = FloatLayout()
+
+        body = MDBoxLayout(
+            orientation="vertical",
+            padding=(dp(20), dp(20), dp(20), 0),
+            spacing=dp(10),
+        )
+
+        body.add_widget(
             Label(
-                text="Konten Beranda sedang diuji",
+                text="Materi yang sudah diterbitkan",
                 font_size="18sp",
                 color=WARNA_UTAMA,
+                size_hint_y=None,
+                height=dp(28),
             )
         )
+
+        self.status_label = Label(
+            text="Uji tampilan isi Beranda",
+            font_size="14sp",
+            color=WARNA_TEKS2,
+            size_hint_y=None,
+            height=dp(28),
+        )
+        body.add_widget(self.status_label)
+
+        area.add_widget(body)
+        self.add_widget(area)
 
     def perbarui_salam(self):
         pass
 
     def muat_daftar_materi(self):
         pass
-
 
 class ProfilKonten(MDBoxLayout):
     def __init__(self, **kwargs):
