@@ -367,138 +367,26 @@ class BiodataScreen(MDScreen):
 
 # ---------------------------------------------------------------- BERANDA
 class BerandaKonten(MDBoxLayout):
-    _permintaan = 0   # penanda permintaan terbaru, supaya hasil yang usang diabaikan
-
     def __init__(self, **kwargs):
-        super().__init__(orientation="vertical", md_bg_color=WARNA_LATAR, **kwargs)
+        super().__init__(
+            orientation="vertical",
+            md_bg_color=WARNA_LATAR,
+            **kwargs
+        )
 
-        refresh = MDIconButton(icon="refresh", theme_text_color="Custom", text_color=PUTIH,
-                               pos_hint={"center_y": 0.5})
-        refresh.bind(on_release=lambda *a: self.muat_daftar_materi())
-        self.bar = header("Selamat datang", "Materi apa yang akan diajarkan hari ini?",
-                          tinggi=128, kanan=refresh)
-        self.add_widget(self.bar)
-
-        area = FloatLayout()
-
-        body = MDBoxLayout(orientation="vertical", padding=(dp(20), dp(20), dp(20), 0),
-                           spacing=dp(10))
-        body.add_widget(teks("Materi yang sudah diterbitkan", "Subtitle1", tebal=True,
-                             tinggi=dp(28)))
-        self.status_label = teks("", "Body2", WARNA_TEKS2)
-        body.add_widget(self.status_label)
-
-        scroll = ScrollView()
-        self.list_box = MDBoxLayout(orientation="vertical", size_hint_y=None, spacing=dp(12),
-                                    padding=(0, 0, 0, dp(100)))
-        self.list_box.bind(minimum_height=self.list_box.setter("height"))
-        scroll.add_widget(self.list_box)
-        body.add_widget(scroll)
-        area.add_widget(body)
-
-        fab = tombol("Materi baru", "plus",
-                     lambda *a: MDApp.get_running_app().buka_editor_baru(),
-                     bg=WARNA_AKSEN, fg=WARNA_TEKS_AKSEN, tinggi=56, radius=18,
-                     ukuran_font=15, ukuran_ikon=22, elevation=3,
-                     size_hint_x=None, width=dp(172),
-                     pos_hint={"right": 0.95, "y": 0.03})
-        area.add_widget(fab)
-
-        self.add_widget(area)
+        self.add_widget(
+            Label(
+                text="Beranda berhasil dibuka",
+                font_size="22sp",
+                color=WARNA_UTAMA,
+            )
+        )
 
     def perbarui_salam(self):
-        app = MDApp.get_running_app()
-        self.bar.judul.text = salam() + ", " + app.profil.get("nama", "Guru")
+        pass
 
     def muat_daftar_materi(self):
-        """Tampilkan data tersimpan (kalau ada) lebih dulu, lalu perbarui dari server."""
-        app = MDApp.get_running_app()
-        self.perbarui_salam()
-        self._permintaan += 1
-        token = self._permintaan
-
-        sudah_tampil = bool(self.list_box.children)
-        if not sudah_tampil and app.cache_materi:
-            self._render(app.cache_materi)
-            self.status_label.text = "Memperbarui daftar..."
-        elif sudah_tampil:
-            self.status_label.text = "Memperbarui daftar..."
-        else:
-            self.status_label.text = "Memuat daftar materi..."
-
-        threading.Thread(target=self._ambil, args=(token,), daemon=True).start()
-
-    def _ambil(self, token):
-        """Berjalan di thread terpisah."""
-        app = MDApp.get_running_app()
-        try:
-            daftar = app.firebase.ambil_materi_milik_saya()
-            app.simpan_cache_materi(daftar)
-        except Exception as e:
-            self._gagal(token, str(e))
-            return
-        self._berhasil(token, daftar)
-
-    @mainthread
-    def _berhasil(self, token, daftar):
-        if token != self._permintaan:
-            return
-        MDApp.get_running_app().daftar_perlu_muat = False
-        self._render(daftar)
-        self.status_label.text = "" if daftar else (
-            "Belum ada materi. Ketuk \"Materi baru\" untuk membuat materi pertama.")
-
-    @mainthread
-    def _gagal(self, token, pesan):
-        if token != self._permintaan:
-            return
-        if self.list_box.children:
-            self.status_label.text = ""
-            kabari("Tidak dapat memperbarui. Menampilkan data tersimpan.")
-        else:
-            self.status_label.text = "Gagal memuat: " + pesan
-
-    def _render(self, daftar):
-        self.list_box.clear_widgets()
-        for item in daftar:
-            self.list_box.add_widget(self._baris_materi(item))
-
-    def _baris_materi(self, item):
-        judul = item.get("judul", "(tanpa judul)")
-        kelas = item.get("kelas", "-")
-        materi_id = item.get("_id", "")
-
-        card = kartu(padding=dp(14), spacing=dp(12))
-        adaptif(card)
-
-        atas = MDBoxLayout(size_hint_y=None, height=dp(44), spacing=dp(12))
-        atas.add_widget(ikon_tile("cube-outline", 44))
-        kol = MDBoxLayout(orientation="vertical", size_hint_y=None, height=dp(40),
-                          pos_hint={"center_y": 0.5})
-        kol.add_widget(teks(f"{judul}", "Subtitle1", tebal=True, tinggi=dp(22),
-                            shorten=True, shorten_from="right"))
-        kol.add_widget(teks(f"Kelas {kelas}", "Caption", WARNA_TEKS2, tinggi=dp(18)))
-        atas.add_widget(kol)
-        card.add_widget(atas)
-
-        link = STUDENT_APP_BASE_URL + "?id=" + materi_id
-        baris = MDBoxLayout(size_hint_y=None, height=dp(44), spacing=dp(8))
-
-        def salin(*a, l=link):
-            Clipboard.copy(l)
-            kabari("Link disalin ke clipboard")
-
-        kecil = dict(tinggi=44, radius=12, ukuran_font=12, ukuran_ikon=18, jarak=6)
-        baris.add_widget(tombol(
-            "Edit", "pencil-outline",
-            lambda *a, it=item: MDApp.get_running_app().buka_editor_edit(it), **kecil))
-        baris.add_widget(tombol("Salin link", "link-variant", salin, **kecil))
-        baris.add_widget(tombol(
-            "Hasil", "chart-box-outline",
-            lambda *a, mid=materi_id, j=judul: MDApp.get_running_app().buka_hasil(mid, j),
-            bg=WARNA_UTAMA, fg=PUTIH, **kecil))
-        card.add_widget(baris)
-        return card
+        pass
 
 
 class ProfilKonten(MDBoxLayout):
@@ -555,6 +443,7 @@ class MainScreen(MDScreen):
             text="Beranda",
             icon="home-variant",
         )
+      
         self.beranda = BerandaKonten()
         tab_beranda.add_widget(self.beranda)
         nav.add_widget(tab_beranda)
